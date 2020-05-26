@@ -6,13 +6,16 @@
 namespace einsum::internal {
 
 	template<typename value_type, typename key_part_type, template<typename, typename> class map_type,
-			template<typename> class set_type>
-	class JoinOperator : public Operator<value_type, key_part_type, map_type, set_type> {
-#include "Dice/einsum/internal/OperatorMemberTypealiases.hpp"
-
-		using Join_t = Join<key_part_type, map_type, set_type>;
-		using JoinOperator_t = JoinOperator<value_type, key_part_type, map_type, set_type>;
-
+			template<typename> class set_type, template<typename, template<typename, typename> class map_type_a,
+            template<typename> class set_type_a> class const_BoolHypertrie,
+                    typename Diagonal>
+	class JoinOperator : public Operator<value_type, key_part_type, map_type, set_type, const_BoolHypertrie, Diagonal> {
+		using JoinOperator_t = JoinOperator<value_type, key_part_type, map_type, set_type, const_BoolHypertrie, Diagonal>;
+        using const_BoolHypertrie_t = const_BoolHypertrie<key_part_type, map_type, set_type>;
+        using Join_t = Join<key_part_type, map_type, set_type, const_BoolHypertrie_t, Diagonal>;
+        using Operator_t = Operator<value_type, key_part_type, map_type, set_type, const_BoolHypertrie, Diagonal>;
+        using CardinalityEstimation_t = typename Operator_t::CardinalityEstimation_t;
+        constexpr static const bool bool_value_type = Operator_t::bool_value_type;
 		Join_t join;
 		typename Join_t::iterator join_iter;
 		bool is_result_label = false;
