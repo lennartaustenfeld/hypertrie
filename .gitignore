@@ -38,3 +38,5 @@ cmake-build*/
 .idea/
 venv/
 /build/
+
+.vagrant
